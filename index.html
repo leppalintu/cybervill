@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Website</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="#">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<h1>Welcome to my website</h1>
+		<p>Here's some content for the landing page.</p>
+        <button id="login-button">Login</button>
+	</main>
+    <form id="login-form" style="display: none;">
+        <label for="username">Username:</label>
+			<input type="text" id="username" name="username" required>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" required>
+			<button type="submit">Login</button>
+        
+    </form>
+	<footer>
+		<p>Copyright © 2023</p>
+	</footer>
+    <script>
+        const loginButton = document.getElementById('login-button');
+		const loginForm = document.getElementById('login-form');
+		const usernameField = document.getElementById('username');
+		const passwordField = document.getElementById('password');
+
+		loginButton.addEventListener('click', () => {
+			if (loginForm.style.display === 'none') {
+				loginForm.style.display = 'block';
+			} else {
+				loginForm.style.display = 'none';
+			}
+		});
+
+		loginForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			// Perform form validation
+			if (usernameField.value.trim() === '') {
+				alert('Please enter a username.');
+				return;
+			}
+
+			if (passwordField.value.trim() === '') {
+				alert('Please enter a password.');
+				return;
+			}
+
+			// Send login request to the server
+			fetch('/login', {
+				method: 'POST',
+				body: new FormData(loginForm),
+			})
+				.then(response => {
+					if (response.ok) {
+						alert('Login successful!');
+						// Redirect to the dashboard page
+						window.location.href = '/dash';
+					} else {
+						alert('Invalid username or password.');
+					}
+				})
+				.catch(error => {
+					alert('An error occurred while logging in.');
+					console.error(error);
+				});
+		});
+
+
+    </script>
+</body>
+</html>
